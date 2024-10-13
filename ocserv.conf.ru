@@ -1,16 +1,17 @@
-############################################################################
+################################################################################
 # ПРИМЕЧАНИЕ: Не изменяйте этот файл для настройки ocserv. Добавьте новые
-# директивы в /etc/ocserv/ocserv.conf.local, и они будут включены в конфигурацию ocserv
-############################################################################
+# директивы в /etc/ocserv/ocserv.conf.local, и они будут включены в конфигурацию
+# ocserv
+################################################################################
 
-# Метод аутентификации пользователя. Может быть установлен несколько раз, и в этом
-# случае все должно пройти успешно.
+# Метод аутентификации пользователя. Может быть установлен несколько раз, и в
+# этом случае все должно пройти успешно.
 # Варианты: certificate, pam. 
 #auth = "certificate"
 #auth = "pam"
 
-# Параметр gid-min используется параметром auto-select-group для выбора минимального
-# идентификатора группы.
+# Параметр gid-min используется параметром auto-select-group для выбора
+# минимального идентификатора группы.
 #auth = "pam[gid-min=1000]"
 
 # Для простого варианта требуется указать файл паролей, содержащий записи
@@ -33,105 +34,107 @@ banner = "Welcome to OpenWRT"
 # при повторном подключении.
 listen-host-is-dyndns = |DYNDNS|
 
-# Use listen-host to limit to specific IPs or to the IPs of a provided 
-# hostname.
+# Используйте listen-host, чтобы ограничиться определенными IP-адресами или
+# IP-адресами указанного имени хоста.
 #listen-host = [IP|HOSTNAME]
 
-# Limit the number of clients. Unset or set to zero for unlimited.
+# Ограничить количество клиентов.
+# Используйте ноль для неограниченного количества.
 #max-clients = 1024
 max-clients = |MAX_CLIENTS|
 
-# Rate limit the number of incoming connections to one every X milliseconds
-# (X is the provided value), as the secmod backlog grows. This
-# makes the server more resilient (and prevents connection failures) on
-# multiple concurrent connections. Set to zero for no limit.
+# Установите ограничение на количество входящих подключений до одного клиента
+# каждые X миллисекунд (X - это указанное значение) по мере увеличения второго
+# периода ожидания. Это повышает устойчивость сервера (и предотвращает сбои
+# соединения) при нескольких одновременных подключениях. Установите нулевое
+# значение, чтобы не было ограничений.
 rate-limit-ms = 100
 
-# Limit the number of identical clients (i.e., users connecting 
-# multiple times). Unset or set to zero for unlimited.
+# Ограничьте количество одинаковых клиентов (т.е. пользователей, подключающихся
+# несколько раз).
+# Используйте ноль для неограниченного количества.
 max-same-clients = |MAX_SAME|
 
-# TCP and UDP port number
+# Номер порта TCP и UDP
 tcp-port = |PORT|
 |UDP|udp-port = |UDP_PORT|
 
-# Stats report time. The number of seconds after which each
-# worker process will report its usage statistics (number of
-# bytes transferred etc). This is useful when accounting like
-# radius is in use.
+# Время отчета о состоянии. Количество секунд, по истечении которых каждый
+# рабочий процесс будет сообщать статистику своего использования (количество
+# переданных байт и т.д.). Это полезно, если используется учет, подобный radius.
 #stats-report-time = 360
 
-# Stats reset time. The period of time statistics kept by main/sec-mod
-# processes will be reset. These are the statistics shown by cmd
-# 'occtl show stats'. For daily: 86400, weekly: 604800
-# This is unrelated to stats-report-time.
+# Время сброса статистики. Будет сброшена статистика за период времени,
+# сохраняемый основным/вторым процессами. Это статистика, отображаемая командой
+# "occtl show stats". За день: 86400, за неделю: 604800
+# Это никак не связано со временем составления отчета о состоянии.
 server-stats-reset-time = 604800
 
-# Keepalive in seconds
+# Подержания активности через указанный период в секундах.
 keepalive = 32400
 
-# Dead peer detection in seconds.
+# Обнаружение мертвого peer за считанные секунды.
 dpd = |DPD|
 
-# Dead peer detection for mobile clients. The needs to
-# be much higher to prevent such clients being awaken too 
-# often by the DPD messages, and save battery.
-# (clients that send the X-AnyConnect-Identifier-DeviceType)
+# Обнаружение мертвого peer для мобильных клиентов. Требования должны быть
+# намного выше, чтобы такие клиенты не слишком часто просыпались из-за сообщений
+# DPD для экономии заряда батареи
+# (клиенты, отправляющие X-AnyConnect-Identifier-DeviceType).
 mobile-dpd = 1800
 
-# If using DTLS, and no UDP traffic is received for this
-# many seconds, attempt to send future traffic over the TCP
-# connection instead, in an attempt to wake up the client
-# in the case that there is a NAT and the UDP translation
-# was deleted. If this is unset, do not attempt to use this
-# recovery mechanism.
+# Если используется протокол DTLS, а UDP-трафик не поступает в течение данного
+# количества секунд, попробовать вместо этого отправить будущий трафик по
+# TCP-соединению, чтобы попытаться разбудить клиента в случае, если есть NAT и
+# трансляция UDP была удалена. Если этот параметр не установлен, этот механизм
+# восстановления использоваться не будет.
 switch-to-tcp-timeout = 25
 
-# MTU discovery (DPD must be enabled)
+# Обнаружение MTU (DPD должен быть включен)
 try-mtu-discovery = false
 
-# The key and the certificates of the server
-# The key may be a file, or any URL supported by GnuTLS (e.g., 
-# tpmkey:uuid=xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx;storage=user
-# or pkcs11:object=my-vpn-key;object-type=private)
+#### Ключ и сертификаты сервера
+# Ключом может быть файл или любой URL-адрес, поддерживаемый GnuTLS (например,
+# tpmkey:uuid=xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx;storage=user or
+# pkcs11:object=my-vpn-key;object-type=private)
 #
-# There may be multiple certificate and key pairs and each key
-# should correspond to the preceding certificate.
+# Может быть несколько пар сертификатов и ключей, и каждый ключ должен
+# соответствовать предыдущему сертификату.
 server-cert = /etc/ocserv/server-cert.pem
 server-key = /etc/ocserv/server-key.pem
 
-# Diffie-Hellman parameters. Only needed if you require support
-# for the DHE ciphersuites (by default this server supports ECDHE).
-# Can be generated using:
+# Параметры Diffie-Hellman. Требуется только в том случае, если вам требуется
+# поддержка наборов шифров DHE (по умолчанию этот сервер поддерживает ECDHE).
+# Может быть сгенерирован с помощью:
 # certtool --generate-dh-params --outfile /path/to/dh.pem
 #dh-params = /path/to/dh.pem
 
-# If you have a certificate from a CA that provides an OCSP
-# service you may provide a fresh OCSP status response within
-# the TLS handshake. That will prevent the client from connecting
-# independently on the OCSP server.
-# You can update this response periodically using:
+# Если у вас есть сертификат от центра сертификации, предоставляющего службу
+# OCSP, вы можете предоставить новый ответ о статусе OCSP в рамках подтверждения
+# TLS. Это предотвратит независимое подключение клиента к серверу OCSP.
+# Вы можете периодически обновлять этот ответ с помощью:
 # ocsptool --ask --load-cert=your_cert --load-issuer=your_ca --outfile response
-# Make sure that you replace the following file in an atomic way.
+# Убедитесь, что вы заменили следующий файл атомарным способом.
 #ocsp-response = /path/to/ocsp.der
 
-# In case PKCS #11 or TPM keys are used the PINs should be available
-# in files. The srk-pin-file is applicable to TPM keys only, and is the 
-# storage root key.
+# В случае использования ключей PKCS #11 или доверенного платформенного модуля,
+# PIN-коды должны быть доступны в файлах. Файл srk-pin применим только к ключам
+# доверенного платформенного модуля и является корневым ключом хранилища.
 #pin-file = /path/to/pin.txt
 #srk-pin-file = /path/to/srkpin.txt
 
-# The Certificate Authority that will be used to verify
-# client certificates (public keys) if certificate authentication
-# is set.
+# Центр сертификации, который будет использоваться для проверки клиентских 
+# сертификатов (открытых ключей), если установлена проверка подлинности по
+# сертификату.
 #ca-cert = /etc/ocserv/ca.pem
 
-# The object identifier that will be used to read the user ID in the client 
-# certificate. The object identifier should be part of the certificate's DN
-# Useful OIDs are: 
-#  CN = 2.5.4.3, UID = 0.9.2342.19200300.100.1.1
+# Идентификатор объекта, который будет использоваться для считывания
+# идентификатора пользователя в клиентском сертификате. Идентификатор объекта
+# должен быть частью DN сертификата.
+# Полезными OID являются:
+# CN = 2.5.4.3, UID = 0.9.2342.19200300.100.1.1
 #cert-user-oid = 0.9.2342.19200300.100.1.1
 
+################################################################################
 # The object identifier that will be used to read the user group in the 
 # client  certificate. The object identifier should be part of the certificate's
 # DN. Useful OIDs are: 
