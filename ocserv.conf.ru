@@ -271,171 +271,170 @@ socket-file = ocserv-socket
 run-as-user = ocserv
 run-as-group = ocserv
 
-################################################################################
-# Set the protocol-defined priority (SO_PRIORITY) for packets to
-# be sent. That is a number from 0 to 6 with 0 being the lowest
-# priority. Alternatively this can be used to set the IP Type-
-# Of-Service, by setting it to a hexadecimal number (e.g., 0x20).
-# This can be set per user/group or globally.
+# Установите приоритет, определенный протоколом (SO_PRIORITY) для отправляемых
+# пакетов. Это число от 0 до 6, где 0 - самый низкий приоритет. В качестве
+# альтернативы это можно использовать для настройки IP Type-Of-Service,
+# установив для него шестнадцатеричное число (например, 0x20).
+# Это можно задать для каждого пользователя/группы или глобально.
 #net-priority = 3
 
-# Set the VPN worker process into a specific cgroup. This is Linux
-# specific and can be set per user/group or globally.
+# Выделите рабочий процесс VPN в определенную группу. Это зависит от Linux и
+# может быть настроено для каждого пользователя/группы или глобально.
 #cgroup = "cpuset,cpu:test"
 
 #
-# Network settings
+# Сетевые настройки
 #
 
-# The name of the tun device
+# Название устройства tun
 device = vpns
 
-# Whether the generated IPs will be predictable, i.e., IP stays the
-# same for the same user when possible.
+################################################################################
+# Будут ли сгенерированные IP-адреса предсказуемыми, т.е. IP-адрес останется
+# неизменным для одного и того же пользователя, когда это возможно.
 predictable-ips = |PREDICTABLE_IPS|
 
-# The default domain to be advertised
+# Домен по умолчанию, который будет объявлен
 |ENABLE_DEFAULT_DOMAIN|default-domain = |DEFAULT_DOMAIN|
 
-# The pool of addresses that leases will be given from.
+# Список адресов, с которых будут выдаваться договоры аренды.
 ipv4-network = |IPV4ADDR|
 ipv4-netmask = |NETMASK|
 
-# The advertized DNS server. Use multiple lines for
-# multiple servers.
-# dns = fc00::4be0
+# Транслируемый DNS-сервер. Используйте несколько строк для нескольких серверов.
+#dns = fc00::4be0
 #dns = 192.168.1.2
 
-# The NBNS server (if any)
+# Сервер NBNS (если таковой имеется)
 #nbns = 192.168.1.3
 
-# The IPv6 subnet that leases will be given from.
+# Будет указана подсеть IPv6, из которой будет осуществляться аренда.
 |ENABLE_IPV6|ipv6-network = |IPV6ADDR|
 
-# The domains over which the provided DNS should be used. Use
-# multiple lines for multiple domains.
+# Домены, для которых следует использовать предоставленный DNS. Используйте
+# несколько строк для нескольких доменов.
 |ENABLE_SPLIT_DNS|split-dns = |DEFAULT_DOMAIN|
 
-# Prior to leasing any IP from the pool ping it to verify that
-# it is not in use by another (unrelated to this server) host.
+# Прежде чем арендовать какой-либо IP-адрес из пула, пропингуйте его, чтобы
+# убедиться, что он не используется другим устройством (не связанным с этим
+# сервером) хостом.
 ping-leases = |PING_LEASES|
 
-# Whether to tunnel all DNS queries via the VPN. This is the default
-# when a default route is set.
+# Следует ли туннелировать все DNS-запросы через VPN. Это значение используется
+# по умолчанию, если задан маршрут по умолчанию.
 #tunnel-all-dns = true
 
-# Unset to assign the default MTU of the device
+# Снимите настройку, чтобы назначить MTU устройства по умолчанию
 # mtu = 
 
-# Unset to enable bandwidth restrictions (in bytes/sec). The
-# setting here is global, but can also be set per user or per group.
+# Снимите флажок, чтобы включить ограничения по пропускной способности
+# (в байтах/сек). Данная настройка является глобальной, но также может быть
+# установлена для каждого пользователя или группы.
 #rx-data-per-sec = 40000
 #tx-data-per-sec = 40000
 
-# The number of packets (of MTU size) that are available in
-# the output buffer. The default is low to improve latency.
-# Setting it higher will improve throughput.
+# Количество пакетов (размером MTU), доступных в выходном буфере. Значение по
+# умолчанию низкое для уменьшения задержки. Если установить его выше, это
+# повысит пропускную способность.
 #output-buffer = 10
 
-# Routes to be forwarded to the client. If you need the
-# client to forward routes to the server, you may use the 
-# config-per-user/group or even connect and disconnect scripts.
+# Маршруты, которые будут перенаправлены клиенту. Если вам нужно, чтобы клиент
+# перенаправлял маршруты на сервер, вы можете использовать настройки для каждого
+# пользователя/группы или даже сценарии подключения и отключения.
 #
-# To set the server as the default gateway for the client just
-# comment out all routes from the server.
+# Чтобы установить сервер в качестве шлюза по умолчанию для клиента, просто
+# закомментируйте все маршруты с сервера.
 #route = 192.168.1.0/255.255.255.0
 #route = 192.168.5.0/255.255.255.0
 #route = fef4:db8:1000:1001::/64
 
-# Configuration files that will be applied per user connection or
-# per group. Each file name on these directories must match the username
-# or the groupname.
-# The options allowed in the configuration files are dns, nbns,
-#  ipv?-network, ipv4-netmask, ipv6-prefix, rx/tx-per-sec, iroute, route,
-#  net-priority and cgroup.
+# Файлы конфигурации, которые будут применяться для каждого подключения
+# пользователя или для каждой группы. Имя каждого файла в этих каталогах должно
+# совпадать с именем пользователя или группы.
+# В файлах конфигурации разрешены следующие параметры:
+#   dns, nbns, ipv?-network, ipv4-netmask, ipv6-prefix, rx/tx-per-sec, iroute,
+#   route, net-priority и cgroup.
 #
-# Note that the 'iroute' option allows to add routes on the server
-# based on a user or group. The syntax depends on the input accepted
-# by the commands route-add-cmd and route-del-cmd (see below).
-
+# Обратите внимание, что опция "route" позволяет добавлять маршруты на сервер в
+# зависимости от пользователя или группы. Синтаксис зависит от ввода,
+# принимаемого командами route-add-cmd и route-del-cmd (см. ниже).
 config-per-user = /etc/ocserv/config-per-user/
 config-per-group = /etc/ocserv/config-per-group/
 
-# When config-per-xxx is specified and there is no group or user that
-# matches, then utilize the following configuration.
+# Если задан параметр config-per-xxx и нет подходящей группы или пользователя,
+# то используйте следующую конфигурацию.
 
 #default-user-config = /etc/ocserv/defaults/user.conf
 #default-group-config = /etc/ocserv/defaults/group.conf
 
-# Groups that a client is allowed to select from.
-# A client may belong in multiple groups, and in certain use-cases
-# it is needed to switch between them. For these cases the client can
-# select prior to authentication. Add multiple entries for multiple groups.
+# Группы, из которых клиенту разрешено выбирать.
+# Клиент может принадлежать к нескольким группам, и в определенных случаях
+# использования необходимо переключаться между ними. В этих случаях клиент может
+# выбирать перед аутентификацией. Добавьте несколько записей для нескольких
+# групп.
 #select-group = group1
 #select-group = group2[My group 2]
 #select-group = tost[The tost group]
 
-# The name of the group that if selected it would allow to use
-# the assigned by default group.
+# Имя группы, которая, если будет выбрана, позволит использовать назначенную по
+# умолчанию группу.
 #default-select-group = DEFAULT
 
-# Instead of specifying manually all the allowed groups, you may instruct
-# ocserv to scan all available groups and include the full list. That
-# option is only functional on plain authentication.
+# Вместо того, чтобы вручную указывать все разрешенные группы, вы можете
+# поручить ocserv проверить все доступные группы и включить полный список. Эта
+# опция работает только при обычной аутентификации.
 #auto-select-group = true
 
-# The system command to use to setup a route. %{R} will be replaced with the
-# route/mask and %{D} with the (tun) device.
+# Системная команда, используемая для настройки маршрута. %{R} будет заменен на
+# route/mask, а %{D} - на (tun) device.
 #
-# The following example is from linux systems. %{R} should be something
-# like 192.168.2.0/24
-
+# Следующий пример взят из систем Linux. %{R} должно быть как 192.168.2.0/24
 #route-add-cmd = "/usr/sbin/ip route add %{R} dev %{D}"
 #route-del-cmd = "/usr/sbin/ip route delete %{R} dev %{D}"
 
 route-add-cmd = "/sbin/route add -net %{RI} dev %{D}"
 route-del-cmd = "/sbin/route del -net %{RI} dev %{D}"
 
-# This option allows to forward a proxy. The special strings '%{U}'
-# and '%{G}', if present will be replaced by the username and group name.
+# Эта опция позволяет перенаправлять прокси-сервер. Специальные строки "%{U}" и
+# "%{G}", если они присутствуют, будут заменены на имя пользователя и название
+# группы.
 #proxy-url = http://example.com/
 #proxy-url = http://example.com/%{U}/%{G}/hello
 
 #
-# The following options are for (experimental) AnyConnect client 
-# compatibility. 
+# Следующие параметры предназначены для (экспериментальной) совместимости с
+# клиентом AnyConnect.
 
-# Client profile xml. A sample file exists in doc/profile.xml.
-# This file must be accessible from inside the worker's chroot. 
-# It is not used by the openconnect client.
+# XML-файл профиля клиента. Примерный файл существует в doc/profile.xml. Этот
+# файл должен быть доступен из chroot-файла пользователя. Он не используется
+# клиентом openconnect.
 #user-profile = profile.xml
 
-# Binary files that may be downloaded by the CISCO client. Must
-# be within any chroot environment.
+# Двоичные файлы, которые могут быть загружены клиентом CISCO. Должны находиться
+# в любой среде chroot.
 #binary-files = /path/to/binaries
 
-# Unless set to false it is required for clients to present their
-# certificate even if they are authenticating via a previously granted
-# cookie and complete their authentication in the same TCP connection.
-# Legacy CISCO clients do not do that, and thus this option should be 
-# set for them.
+# Если не установлено значение false, клиентам необходимо предоставить свой
+# сертификат, даже если они проходят аутентификацию с помощью ранее
+# предоставленного файла cookie и завершают аутентификацию в том же
+# TCP-соединении.
+# Устаревшие клиенты CISCO этого не делают, и, следовательно, для них следует
+# установить эту опцию.
 cisco-client-compat = |CISCO_COMPAT|
 
-#Advanced options
+# Расширенные параметры
 
-# Option to allow sending arbitrary custom headers to the client after
-# authentication and prior to VPN tunnel establishment.
+# Возможность разрешить отправку произвольных пользовательских заголовков
+# клиенту после аутентификации и до создания VPN-туннеля.
 #custom-header = "X-My-Header: hi there"
 
 expose-iroutes = true
 
-################################################################################
-# Log Level. Ocserv sends the logging messages to standard error
-# as well as the system log. The log level can be overridden in the
-# command line with the -d option. All messages at the configured
-# level and lower will be displayed.
-# Supported levels (default 0):
-#   0 default (Same as basic)
+# Уровень журнала. Ocserv отправляет сообщения журнала в standard error, а также
+# в системный журнал. Уровень журнала можно изменить в командной строке с
+# помощью параметра -d. Будут отображаться все сообщения на настроенном уровне
+# и ниже. Поддерживаемые уровни (по умолчанию 0):
+#   0 default (то же, что и basic)
 #   1 basic
 #   2 info
 #   3 debug
