@@ -134,87 +134,91 @@ server-key = /etc/ocserv/server-key.pem
 # CN = 2.5.4.3, UID = 0.9.2342.19200300.100.1.1
 #cert-user-oid = 0.9.2342.19200300.100.1.1
 
-################################################################################
-# The object identifier that will be used to read the user group in the 
-# client  certificate. The object identifier should be part of the certificate's
-# DN. Useful OIDs are: 
+# Идентификатор объекта, который будет использоваться для определения группы
+# пользователей в клиентском сертификате. Идентификатор объекта должен быть
+# частью DN сертификата. Полезными OID являются:
 #  OU (organizational unit) = 2.5.4.11 
 #cert-group-oid = 2.5.4.11
 
-# The revocation list of the certificates issued by the 'ca-cert' above.
+# Список аннулированных сертификатов, выданных вышеуказанным "ca-cert".
 #crl = /etc/ocserv/crl.pem
 
-# Uncomment this to enable compression negotiation (LZS, LZ4).
+# Раскомментируйте это, чтобы включить согласование сжатия (LZS, LZ4).
 |COMPRESSION|compression = true
 
-# GnuTLS priority string
+# Строка приоритета GnuTLS
 tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0"
 
-# To enforce perfect forward secrecy (PFS) on the main channel.
+# Для обеспечения идеальной прямой секретности (PFS) на главном канале.
 #tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0:-RSA"
 
-# The time (in seconds) that a client is allowed to stay connected prior
-# to authentication
+# Время (в секундах), в течение которого клиенту разрешается оставаться на связи
+# до прохождения аутентификации.
 auth-timeout = 240
 
-# The time (in seconds) that a client is allowed to stay idle (no traffic)
-# before being disconnected. Unset to disable.
+# Время (в секундах), в течение которого клиент может находиться в режиме
+# ожидания (без трафика) перед отключением.
+# Снимите флажок отключить.
 #idle-timeout = 1200
 
-# The time (in seconds) that a mobile client is allowed to stay idle (no
-# traffic) before being disconnected. Unset to disable.
+# Время (в секундах), в течение которого мобильному клиенту разрешается 
+# оставаться в режиме ожидания (без трафика) перед отключением.
+# Снимите флажок отключить.
 #mobile-idle-timeout = 2400
 
-# The time (in seconds) that a client is not allowed to reconnect after 
-# a failed authentication attempt.
+# Время (в секундах), в течение которого клиенту не разрешается повторно
+# подключаться после неудачной попытки аутентификации.
 min-reauth-time = 360
 
-# Banning clients in ocserv works with a point system. IP addresses
-# that get a score over that configured number are banned for
-# min-reauth-time seconds. By default a wrong password attempt is 10 points,
-# a KKDCP POST is 1 point, and a connection is 1 point. Note that
-# due to difference processes being involved the count of points
-# will not be real-time precise.
+# Блокировка клиентов в ocserv работает по системе начисления баллов. IP-адреса,
+# которые набирают количество баллов, превышающее указанное в настройках,
+# блокируются на минимальное время авторизации. По умолчанию за неверную попытку
+# ввода пароля начисляется 10 баллов, за сообщение KKDCP - 1 балл, а за
+# подключение - 1 балл. Обратите внимание, что из-за различий в используемых
+# процессах подсчет баллов не будет точным в режиме реального времени.
 #
-# Score banning cannot be reliably used when receiving proxied connections
-# locally from an HTTP server (i.e., when listen-clear-file is used).
+# Запрет Score не может быть надежно использован при получении прокси-соединений
+# локально с HTTP-сервера (т.е. когда используется функция listen-clear-file).
 #
-# Set to zero to disable.
+# Установите значение "ноль" для отключения.
 max-ban-score = 80
 
-# The time (in seconds) that all score kept for a client is reset.
+# Время (в секундах), в течение которого все оценки, сохраненные для клиента,
+# сбрасываются.
 ban-reset-time = 1200
 
-# In case you'd like to change the default points.
+# На случай, если вы захотите изменить значения по умолчанию.
 #ban-points-wrong-password = 10
 #ban-points-connection = 1
 #ban-points-kkdcp = 1
 
-# Cookie timeout (in seconds)
-# Once a client is authenticated he's provided a cookie with
-# which he can reconnect. That cookie will be invalidated if not
-# used within this timeout value. This cookie remains valid, during
-# the user's connected time, and after user disconnection it
-# remains active for this amount of time. That setting should allow a
-# reasonable amount of time for roaming between different networks.
+# Время ожидания файлов cookie (в секундах)
+# Как только клиент проходит аутентификацию, ему предоставляется файл cookie, с
+# помощью которого он может повторно подключиться. Этот файл cookie будет
+# признан недействительным, если не будет использован в течение этого времени
+# ожидания. Этот файл cookie остается действительным в течение времени
+# подключения пользователя, а после отключения пользователя он остается активным
+# в течение этого периода времени. Эта настройка должна обеспечивать разумный
+# промежуток времени для перемещения между различными сетями.
 cookie-timeout = 300
 
-# If this is enabled (not recommended) the cookies will stay
-# valid even after a user manually disconnects, and until they
-# expire. This may improve roaming with some broken clients.
+# Если эта функция включена (не рекомендуется), файлы cookie будут оставаться
+# действительными даже после того, как пользователь отключится вручную, и до
+# истечения срока их действия. Это может улучшить роуминг с некоторыми
+# неработающими клиентами.
 #persistent-cookies = true
 
-# Whether roaming is allowed, i.e., if true a cookie is
-# restricted to a single IP address and cannot be re-used
-# from a different IP.
+# Запрещен ли роуминг, т.е. если это значение равно true, файл cookie ограничен
+# одним IP-адресом и не может быть повторно использован с другого IP-адреса.
 deny-roaming = false
 
-# ReKey time (in seconds)
-# ocserv will ask the client to refresh keys periodically once
-# this amount of seconds is elapsed. Set to zero to disable (note
-# that, some clients fail if rekey is disabled).
+# Время повторного ввода (в секундах) ocserv будет запрашивать у клиента
+# периодическое обновление ключей по истечении этого времени. Установите нулевое
+# значение для отключения (обратите внимание, что некоторые клиенты выходят из
+# строя, если rekey отключен).
 rekey-time = 172800
 
+################################################################################
 # ReKey method
 # Valid options: ssl, new-tunnel
 #  ssl: Will perform an efficient rehandshake on the channel allowing
@@ -420,6 +424,7 @@ cisco-client-compat = |CISCO_COMPAT|
 
 expose-iroutes = true
 
+################################################################################
 # Log Level. Ocserv sends the logging messages to standard error
 # as well as the system log. The log level can be overridden in the
 # command line with the -d option. All messages at the configured
@@ -434,28 +439,31 @@ expose-iroutes = true
 #   9 TLS
 log-level = 3
 
-# This option will enable the X-CSTP-Client-Bypass-Protocol (disabled by default).
-# If the server has not configured an IPv6 or IPv4 address pool, enabling this option
-# will instruct the client to bypass the server for that IP protocol. The option is
-# currently only understood by Anyconnect clients.
+# Эта опция активирует протокол обхода X-CSTP-Client-Bypass-Protocol (по
+# умолчанию отключен). Если сервер не настроил пул адресов IPv6 или IPv4,
+# включение этой опции позволит клиенту обойти сервер по этому IP-протоколу.
+# В настоящее время эта опция доступна только клиентам Anyconnect.
 client-bypass-protocol = false
 
-# The following options are related to server camouflage (hidden service)
+# Следующие опции относятся к маскировке сервера (скрытому сервису)
 
-# This option allows you to enable the camouflage feature of ocserv that makes it look
-# like a web server to unauthorized parties.
-# With "camouflage" enabled, connection to the VPN can be established only if the client provided a specific
-# "secret string" in the connection URL, e.g. "https://example.com/?mysecretkey",
-# otherwise the server will return HTTP error for all requests.
+# Эта опция позволяет вам включить функцию маскировки ocserv, которая делает его
+# похожим на веб-сервер для посторонних лиц. При включенном "камуфляже"
+# подключение к VPN может быть установлено только в том случае, если клиент
+# указал определенную "секретную строку" в URL-адресе подключения, например:
+# https://example.com/?mysecretkey
+# в противном случае сервер будет возвращать HTTP-ошибку для всех запросов.
 camouflage = false
 
-# The URL prefix that should be set on the client (after '?' sign) to pass through the camouflage check,
-# e.g. in case of 'mysecretkey', the server URL on the client should be like "https://example.com/?mysecretkey".
+# Префикс URL-адреса, который может быть установлен на клиенте (после знака "?")
+# для прохождения проверки маскировки, например, в случае "mysecretkey"
+# URL-адрес сервера на клиенте должен быть похож на:
+# https://example.com/?mysecretkey
 camouflage_secret = "mysecretkey"
 
-# Defines the realm (browser prompt) for HTTP authentication.
-# If no realm is set, the server will return 404 Not found error instead of 401 Unauthorized.
-# Better change it from the default value to avoid fingerprinting.
+# Определяет область (запрос браузера) для HTTP-аутентификации. Если область не
+# задана, сервер вернет ошибку 404 Not found вместо 401 Unauthorized. Лучше
+# изменить значение по умолчанию, чтобы избежать обнаружения отпечатков пальцев.
 camouflage_realm = "Restricted Content"
 
 # HTTP headers
