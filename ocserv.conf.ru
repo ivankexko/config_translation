@@ -243,34 +243,35 @@ rekey-method = ssl
 #connect-script = /usr/bin/ocserv-script
 #disconnect-script = /usr/bin/ocserv-script
 
-# UTMP
+# UTMP позволяет получать информацию о том, кто в данный момент подключен.
 use-utmp = false
 
-################################################################################
-# Whether to enable support for the occtl tool (i.e., either through D-BUS,
-# or via a unix socket).
+# Следует ли включить поддержку инструмента occt (т.е. либо через DBUS, либо через сокет unix).
 use-occtl = true
 
-# socket file used for IPC with occtl. You only need to set that,
-# if you use more than a single servers.
+# Файл сокета, используемый для IPC с occt. Вам нужно установить это значение
+# только в том случае, если вы используете более одного сервера.
 occtl-socket-file = /var/run/occtl.socket
 
-# PID file. It can be overriden in the command line.
+# PID-файл. Его можно переопределить в командной строке.
 pid-file = /var/run/ocserv.pid
 
-# The default server directory. Does not require any devices present.
+# Каталог сервера по умолчанию. Для этого не требуется наличие каких-либо
+# устройств.
 chroot-dir = /var/lib/ocserv
 
-# socket file used for IPC, will be appended with .PID
-# It must be accessible within the chroot environment (if any)
+# к файлу сокета, используемому для IPC, будет добавлен .PID
+# Он должен быть доступен в среде chroot (если таковая имеется).
 #socket-file = /var/run/ocserv-socket
 socket-file = ocserv-socket
 
-# The user the worker processes will be run as. It should be
-# unique (no other services run as this user).
+# Пользователь, от имени которого будут запускаться рабочие процессы. Он должен
+# быть уникальным (никакие другие службы не запускаются от имени этого
+# пользователя).
 run-as-user = ocserv
 run-as-group = ocserv
 
+################################################################################
 # Set the protocol-defined priority (SO_PRIORITY) for packets to
 # be sent. That is a number from 0 to 6 with 0 being the lowest
 # priority. Alternatively this can be used to set the IP Type-
