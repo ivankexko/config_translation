@@ -218,31 +218,35 @@ deny-roaming = false
 # строя, если rekey отключен).
 rekey-time = 172800
 
-################################################################################
-# ReKey method
-# Valid options: ssl, new-tunnel
-#  ssl: Will perform an efficient rehandshake on the channel allowing
-#       a seamless connection during rekey.
-#  new-tunnel: Will instruct the client to discard and re-establish the channel.
-#       Use this option only if the connecting clients have issues with the ssl
-#       option.
+# Метод повторного подключения
+# Допустимые параметры: ssl, new-tunnel
+#  ssl: Выполнит эффективное повторное подключение к каналу, обеспечивая
+#    бесперебойное соединение во время повторного подключения.
+# new-tunnel: Даст указание клиенту отменить и восстановить канал. Используйте
+#    эту опцию только в том случае, если у подключающихся клиентов возникают
+#    проблемы с опцией ssl.
 rekey-method = ssl
 
-# Script to call when a client connects and obtains an IP
-# Parameters are passed on the environment.
-# REASON, USERNAME, GROUPNAME, HOSTNAME (the hostname selected by client), 
-# DEVICE, IP_REAL (the real IP of the client), IP_LOCAL (the local IP
-# in the P-t-P connection), IP_REMOTE (the VPN IP of the client),
-# ID (a unique numeric ID); REASON may be "connect" or "disconnect".
+# Скрипт, вызываемый при подключении клиента и получении IP-адреса
+# Следующие параметры передаются в среду выполнения скрипта:
+# REASON - событие, может быть "подключение" или "отключение";
+# USERNAME - имя пользовтеля;
+# GROUPNAME - имя группы;
+# HOSTNAME - имя хоста, выбранное клиентом; 
+# DEVICE - устройство;
+# IP_REAL - реальный IP клиента;
+# IP_LOCAL - локальный IP в PtP-соединении;
+# IP_REMOTE - VPN-IP клиента;
+# ID - уникальный цифровой идентификатор.
 
-# These scripts are not needed if you have setup an interface for all vpns+
-# devices.
+# Эти скрипты не нужны, если вы настроили интерфейс для всех устройств vpn+.
 #connect-script = /usr/bin/ocserv-script
 #disconnect-script = /usr/bin/ocserv-script
 
 # UTMP
 use-utmp = false
 
+################################################################################
 # Whether to enable support for the occtl tool (i.e., either through D-BUS,
 # or via a unix socket).
 use-occtl = true
