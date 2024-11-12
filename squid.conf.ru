@@ -18,7 +18,7 @@ acl localnet src fe80::/10             # RFC 4291 link-local (напрямую �
 
 #-------------------------------------------------------------------------------
 # Порты удаленных хостов, к которым разрешается подключение через прокси
-acl SSL_ports port 443    # https (ssl/tls)
+acl SSL_ports port 443		# https (ssl/tls)
 acl Safe_ports port 80		# http
 acl Safe_ports port 21		# ftp
 acl Safe_ports port 443		# https
